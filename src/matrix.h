@@ -1,7 +1,15 @@
-struct matrix {
+struct int_matrix {
     char *data;
     char width;
     char height;
 };
 
-extern struct matrix x;
+struct ternary_matrix {
+    // void *data;
+    char *data;
+    char width;
+    char height;
+};
+
+extern struct int_matrix y;
+extern struct ternary_matrix x;
