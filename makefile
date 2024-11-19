@@ -7,7 +7,7 @@ LD65 = ld65
 TARGET = apple2
 
 # Source files
-C_SRC = src/matrix.c src/program.c
+C_SRC = src/matrix.c src/matrix_const.c src/program.c
 ASM_SRC = src/text.s
 
 # Intermediate assembly files
