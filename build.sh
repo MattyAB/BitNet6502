@@ -3,4 +3,4 @@ make
 
 ## Build to image
 cp apple2files/blank.dsk apple2files/program.dsk
-java -jar ac.jar -as apple2files/program.dsk program B 0x0803 < build//program
+/opt/homebrew/opt/openjdk@17/bin/java -jar ac.jar -as apple2files/program.dsk program B 0x0803 < build//program

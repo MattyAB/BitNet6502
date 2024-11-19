@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "matrix.h"
 
 char i, j, k, l;
-signed char a;
+signed int a;
 unsigned char b;
 
 void print_int_matrix(struct int_matrix *m) {
@@ -42,25 +43,6 @@ void print_ternary_matrix(struct ternary_matrix *m) {
     }
 }
 
-void safeadd(signed char *x, signed char *y, signed char *z) {
-    if ((*x > 0 && *y > 127 - *x) || (*x < 0 && *y < -128 - *x)) {
-        // overflow!
-        ;
-    } else {
-        *z = *x + *y;
-    }
-}
-
-void safesub(signed char *x, signed char *y, signed char *z) {
-    if ((*y > 0 && *x < -128 + *y) || (*y < 0 && *x > 127 + *y)) {
-        // overflow!
-        ;
-    } else {
-        *z = *x - *y;
-    }
-}
-
-
 // Multiples z := x @ y
 void matrix_multiply(struct ternary_matrix *x, struct int_matrix *y, struct int_matrix *z) {
     if (x->width != y->height) {
@@ -81,12 +63,10 @@ void matrix_multiply(struct ternary_matrix *x, struct int_matrix *y, struct int_
                         case 0b0:
                             break;
                         case 0b1:
-                            // a += y->data[j + y->width * (4 * k + l)];
-                            safeadd(&a, &y->data[j + y->width * (4 * k + l)], &a);
+                            a += y->data[j + y->width * (4 * k + l)];
                             break;
                         case 0b10:
-                            // a -= y->data[j + y->width * (4 * k + l)];
-                            safesub(&a, &y->data[j + y->width * (4 * k + l)], &a);
+                            a -= y->data[j + y->width * (4 * k + l)];
                             break;
                         default:
                             printf("\nError encountered: unknown value in ternary");
@@ -98,7 +78,13 @@ void matrix_multiply(struct ternary_matrix *x, struct int_matrix *y, struct int_
                 }
             }
 
-            z->data[i * y->width + j] = a;
+            if (a > SCHAR_MAX) {
+                z->data[i * y->width + j] = SCHAR_MAX;
+            } else if (a < SCHAR_MIN) {
+                z->data[i * y->width + j] = SCHAR_MIN;
+            } else {
+                z->data[i * y->width + j] = a;
+            }
         }
     }
 }
