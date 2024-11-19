@@ -3,21 +3,25 @@
 
 #include "matrix.h"
 #include "matrix_const.h"
+#include "F.h"
 
-extern char text[];
+extern struct int_matrix rms_result;
 
 int main (void) {
-    printf ("\n%s\n", text);
-
-    print_ternary_matrix(&x);
-    printf("\n");
-    print_int_matrix(&y);
-
     matrix_multiply(&x, &y, &z);
 
+    print_int_matrix(&y);
     printf("\n");
-    print_int_matrix(&z);
 
+    rms_norm(&y);
+
+    print_int_matrix(&rms_result);
+
+
+    // test_long = 65536;
+    // printf("%lu\n", test_long);
+    // test_long = sqrt_long(test_long);
+    // printf("%lu\n", test_long);
 
     return EXIT_SUCCESS;
 }

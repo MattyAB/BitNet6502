@@ -9,6 +9,7 @@ signed int a;
 unsigned char b;
 
 void print_int_matrix(struct int_matrix *m) {
+    // printf("len: %dx%d\n", m->height, m->width);
     for (i = 0; i < m->height; i++) {
         for (j = 0; j < m->width; j++) {
             printf("%4d", m->data[i * m->width + j]);
