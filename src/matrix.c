@@ -42,6 +42,25 @@ void print_ternary_matrix(struct ternary_matrix *m) {
     }
 }
 
+void safeadd(signed char *x, signed char *y, signed char *z) {
+    if ((*x > 0 && *y > 127 - *x) || (*x < 0 && *y < -128 - *x)) {
+        // overflow!
+        ;
+    } else {
+        *z = *x + *y;
+    }
+}
+
+void safesub(signed char *x, signed char *y, signed char *z) {
+    if ((*y > 0 && *x < -128 + *y) || (*y < 0 && *x > 127 + *y)) {
+        // overflow!
+        ;
+    } else {
+        *z = *x - *y;
+    }
+}
+
+
 // Multiples z := x @ y
 void matrix_multiply(struct ternary_matrix *x, struct int_matrix *y, struct int_matrix *z) {
     if (x->width != y->height) {
@@ -62,10 +81,12 @@ void matrix_multiply(struct ternary_matrix *x, struct int_matrix *y, struct int_
                         case 0b0:
                             break;
                         case 0b1:
-                            a += y->data[j + y->width * (4 * k + l)];
+                            // a += y->data[j + y->width * (4 * k + l)];
+                            safeadd(&a, &y->data[j + y->width * (4 * k + l)], &a);
                             break;
                         case 0b10:
-                            a -= y->data[j + y->width * (4 * k + l)];
+                            // a -= y->data[j + y->width * (4 * k + l)];
+                            safesub(&a, &y->data[j + y->width * (4 * k + l)], &a);
                             break;
                         default:
                             printf("\nError encountered: unknown value in ternary");
