@@ -5,7 +5,9 @@
 
 extern char text[];
 
-char i, j, k;
+char i, j, k, l;
+signed char a;
+unsigned char b;
 
 void print_int_matrix(struct int_matrix *m) {
     for (i = 0; i < m->height; i++) {
@@ -21,10 +23,10 @@ void print_ternary_matrix(struct ternary_matrix *m) {
 
     for (i = 0; i < m->height; i++) {
         for (j = 0; j < m->width / 4; j++) {
-            unsigned char byte = m->data[i * m->width / 4 + j];
+            b = m->data[i * m->width / 4 + j];
             
             for (k = 0; k < 4; k++) {
-                switch (byte & 0b11) {
+                switch (b & 0b11) {
                     case 0b0:
                         printf("0  ");
                         break;
@@ -35,14 +37,49 @@ void print_ternary_matrix(struct ternary_matrix *m) {
                         printf("-1 ");
                         break;
                 }
-                byte = byte >> 2;
+                b = b >> 2;
             }
         }
         printf("\n");
     }
 }
 
-// void matrix_multiply(struct ternary_matrix *x)
+// Multiples z := x @ y
+void matrix_multiply(struct ternary_matrix *x, struct int_matrix *y, struct int_matrix *z) {
+    if (x->width != y->height) printf("Error encountered: matrix dimensions must align");
+
+    for (i = 0; i < x->height; i++) {
+        for (j = 0; j < y->width; j++) {
+            a = 0;
+            
+            for (k = 0; k < x->width / 4; k++) {
+                // printf("%d", i);
+                b = x->data[i * (x->width / 4) + k];
+            
+                for (l = 0; l < 4; l++) {
+                    switch (b & 0b11) {
+                        case 0b0:
+                            break;
+                        case 0b1:
+                            a += y->data[j + y->width * (4 * k + l)];
+                            break;
+                        case 0b10:
+                            a -= y->data[j + y->width * (4 * k + l)];
+                            break;
+                        default:
+                            printf("\nError encountered: unknown value in ternary");
+                            // printf("\ni: %d, j: %d, k: %d, l: %d\n", i, j, k, l);
+                            break;
+                    }
+                    
+                    b = b >> 2;
+                }
+            }
+
+            z->data[i * y->width + j] = a;
+        }
+    }
+}
 
 int main (void) {
     printf ("\n%s\n", text);
@@ -51,6 +88,10 @@ int main (void) {
     printf("\n");
     print_int_matrix(&y);
 
+    matrix_multiply(&x, &y, &z);
+
+    printf("\n");
+    print_int_matrix(&z);
 
 
     return EXIT_SUCCESS;
