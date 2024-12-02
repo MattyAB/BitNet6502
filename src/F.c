@@ -76,3 +76,19 @@ struct int_matrix *rms_norm(struct int_matrix *a) {
     
     return &rms_result;
 }
+
+signed char ReLU(signed char input) {
+    if (input > 0)
+        return input;
+    else
+        return 0;
+}
+
+// ReLU is pointwise, so it acts inplace.
+// For consistency we could return a pointer to the same a. But not necessary
+void MatrixReLU(struct int_matrix *a) {
+    char i;
+    for (i = 0; i < a->height; i++) {
+        a->data[i] = ReLU(a->data[i]);
+    }
+}

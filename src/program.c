@@ -13,9 +13,15 @@ int main (void) {
     print_int_matrix(&y);
     printf("\n");
 
-    rms_norm(&y);
+    MatrixReLU(&y);
 
-    print_int_matrix(&rms_result);
+    print_int_matrix(&y);
+    printf("\n");
+    
+
+    // rms_norm(&y);
+
+    // print_int_matrix(&rms_result);
 
 
     // test_long = 65536;
