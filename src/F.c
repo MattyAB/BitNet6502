@@ -4,7 +4,7 @@
 #include "F.h"
 #include "matrix.h"
 
-extern struct int_matrix rms_result;
+// extern struct int_matrix rms_result;
 
 unsigned long start;
 unsigned long end;
@@ -71,10 +71,11 @@ struct int_matrix *rms_norm(struct int_matrix *a) {
     for (i = 0; i < a->height; i++) {
         tmp = signed_unsigned_divide_char(a->data[i], rms);
         // printf("%d %u %d \n", a->data[i], rms, tmp);
-        rms_result.data[i] = tmp;
+//         rms_result.data[i] = tmp;
     }
     
-    return &rms_result;
+
+//    return &rms_result;
 }
 
 signed char ReLU(signed char input) {
@@ -92,3 +93,5 @@ void MatrixReLU(struct int_matrix *a) {
         a->data[i] = ReLU(a->data[i]);
     }
 }
+
+ 

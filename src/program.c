@@ -4,22 +4,15 @@
 #include "matrix.h"
 #include "matrix_const.h"
 #include "F.h"
+#include "model.h"
 
-extern struct int_matrix rms_result;
+// extern struct int_matrix Q;
 
 int main (void) {
-    matrix_multiply(&x, &y, &z);
 
-    print_int_matrix(&y);
-    printf("\n");
+//     matrix_multiply(&WQ, &y, &Q);
 
-    MatrixReLU(&y);
-
-    print_int_matrix(&y);
-    printf("\n");
-    
-
-    // rms_norm(&y);
+    attention(&y, &WQ, &WK, &WV, &z);
 
     // print_int_matrix(&rms_result);
 
